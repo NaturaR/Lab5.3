@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include <cassert>
 #include "../ConsoleApplication1/ConsoleApplication1.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -12,15 +13,15 @@ namespace UnitTest1
 		
 		TEST_METHOD(TestMethod1)
 		{
-                    
-           double x = 2.0;
-           double expected = (1 - pow(sin(x), 2)) / pow(exp(1), x);
-
-                     
-           double actual = r(x);
-
-        
-           Assert::AreEqual(expected, actual, 0.001);
+			double expected = 0.0;
+			int N = 6;
+			for (int i = N; i <= 20; i++) {
+				expected += (cos(i) + sin(i)) / (1 + cos(i) * sin(i));
+			}
+			Assert::AreEqual(expected, S1(6, 6), 0.0001);
+			Assert::AreEqual(expected, S2(6, 20), 0.0001);
+			Assert::AreEqual(expected, S3(6, 6, 0.0), 0.0001);
+			Assert::AreEqual(expected, S4(6, 20, 0.0), 0.0001);
 		}
 	};
 }

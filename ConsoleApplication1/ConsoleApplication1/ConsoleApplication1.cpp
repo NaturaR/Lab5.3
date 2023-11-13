@@ -3,42 +3,51 @@
 
 
 using namespace std;
-double r(const double x);
+double S0(const int N)
+{
+    double s = 0;
+    for (int i = N; i <= 20; i++)
+        s += (cos(i)+sin(i))/(1+cos(i)*sin(i));
+    return s;
+}
+double S1(const int N, const int i)
+{
+    if (i > 20)
+        return 0;
+    else
+        return ((cos(i) + sin(i)) / (1 + cos(i) * sin(i))) + S1(N, i + 1);
+}
+double S2(const int N, const int i)
+{
+    if (i < N)
+        return 0;
+    else
+        return ((cos(i) + sin(i)) / (1 + cos(i) * sin(i))) + S2(N, i - 1);
+}
+double S3(const int N, const int i, double t)
+{
+    t = t + (cos(i) + sin(i)) / (1 + cos(i) * sin(i));
+    if (i >= 20)
+        return t;
+    else
+        return S3(N, i + 1, t);
+}
+double S4(const int N, const int i, double t)
+{
+    t = t + (cos(i) + sin(i)) / (1 + cos(i) * sin(i));
+    if (i <= N)
+        return t;
+    else
+        return S4(N, i - 1, t);
+}
 int main()
 {
-    double hp, hk, z;
-    int n;
-    cout << "hp = "; cin >> hp;
-    cout << "hk = "; cin >> hk;
-    cout << "n = "; cin >> n;
-    double dh = (hk - hp) / n;
-    double h = hp;
-    while (h <= hk)
-    {
-        z = r(1 + pow(h, 2) - 2 * h) + 2 * r(1 + r(pow(h, 2)) - 2 * pow(r(1), 2));
-        cout << h << " " << z << endl;
-        h += dh;
-    }
+    int N;
+    cout << "N = "; cin >> N;
+    cout << "(iter) S0 = " << S0(N) << endl;
+    cout << "(rec up ++) S1 = " << S1(N, N) << endl;
+    cout << "(rec up --) S2 = " << S2(N, 20) << endl;
+    cout << "(rec down ++) S3 = " << S3(N, N, 0) << endl;
+    cout << "(rec down --) S4 = " << S4(N, 20, 0) << endl;
     return 0;
-}
-double r(const double x)
-{
-    if (abs(x) >= 1)
-        return (1-pow(sin(x),2))/pow(exp(1),x);
-    else
-    {
-        double S = 0;
-        int j = 0;
-        double a = x;
-        S = a;
-        do
-        {
-            j++;
-            double R = x/((2*j+1)*2*j);
-            a *= R;
-            S += a;
-        } while (j < 7);
-        double S1 = (1 / (1 + x)) * S;
-        return S1;
-    }
 }
